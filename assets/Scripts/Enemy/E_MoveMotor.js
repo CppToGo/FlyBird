@@ -79,6 +79,26 @@ cc.Class({
 
     },
 
+    onCollisionEnter(other, self){
+        if (self.tag == 0 && other.node.group == "AirWall") {
+            switch (other.tag) {
+                case 0://下
+                case 3://上
+                    this.moveDirection = -this.moveDirection;
+                    // self.node.getComponent("PMoveMotor").yAcce = 0 ;
+                    break;
+                case 1://左
+                case 2://右
+                    this.moveDirection = -this.moveDirection;
+                    //self.node.getComponent("PMoveMotor").xAcce = 0 ;
+                    break;
+
+            }
+        }
+        
+
+    },
+
     update (dt) {
         this.MoveToTarget();
         this.node.x += this.xSpeed * dt * this.moveDirection;

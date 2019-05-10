@@ -27,11 +27,33 @@ cc.Class({
         //         this._bar = value;
         //     }
         // },
+        PlanetPrefab:{
+            default:[],
+            type:[cc.Prefab],
+        },
+        NewPlanetIntervel:0,
+        healTarget:{
+            default:null,
+            type:cc.Node,
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.schedule(this.InitNewPlanet , this.NewPlanetIntervel);
+    },
+
+    InitNewPlanet(){
+        var newPlanet = cc.instantiate(this.PlanetPrefab[parseInt(Math.random()*100)%this.PlanetPrefab.length]);
+        newPlanet.getComponent("rice").healTarget = this.healTarget;
+        newPlanet.setPosition(Math.random()*this.node.width/2 * (Math.random()>=0.5?1:-1), 0);
+        this.node.addChild(newPlanet);
+    },
+
+    onDestroy(){
+        this.unschedule(this.InitNewPlanet, this)
+    },
 
     start () {
 

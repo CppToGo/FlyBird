@@ -33,7 +33,7 @@ cc.Class({
 
     onLoad () {
         cc.director.getCollisionManager().enabled = true;
-       // cc.director.getCollisionManager().enabledDebugDraw = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
       //  cc.director.getCollisionManager().enabledDrawBoundingBox = true;
     },
 

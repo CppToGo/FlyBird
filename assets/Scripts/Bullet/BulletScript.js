@@ -38,27 +38,33 @@ cc.Class({
         Speed:0,
         Duration:0,
         Damage:0,
+        Gravity:0,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        if (this.Target == null) {
+            this.node.destroy()
+            return
+        }
         this.Destination = this.Target.getPosition();
         var vec = this.Target.getPosition().sub(this.node.getPosition());
+        this.Vector = vec.normalizeSelf().mul(this.Speed) ;
         this.ComVec = new cc.Vec2(0,1);
-        var angle = vec.signAngle(this.ComVec)
-        this.node.rotation = cc.misc.degreesToRadians(angle);
-        
-        var Distance  = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
-        var DuraTime = parseInt(Distance / this.Speed);
-       
-        this.node.runAction( cc.sequence(cc.callFunc(function(){
-            cc.audioEngine.playEffect(this.AudioClip[0],false);
-        }, this),cc.moveTo(2 ,  this.Destination).easing(cc.easeCubicActionIn())));
+
+        cc.audioEngine.playEffect(this.AudioClip[0],false);
+
+        // this.node.runAction( cc.sequence(cc.callFunc(function(){
+        //     cc.audioEngine.playEffect(this.AudioClip[0],false);
+        // }, this),cc.moveTo(2 ,  this.Destination).easing(cc.easeCubicActionIn())));
     },  
 
-    onCollisionEnter(other ,self){
-        cc.audioEngine.playEffect(this.AudioClip[1],false);
+    onCollisionEnter(other ,self){ 
+        if(other.node.group == "Player"){
+            cc.audioEngine.playEffect(this.AudioClip[1],false);
+            other.node.getComponent("LifeManager").AddLife(-this.Damage);
+        }
         this.node.destroy();
     },
 
@@ -66,5 +72,29 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    CountSpeed:function(dt){
+        this.Vector.y -= this.Gravity * dt;
+    },
+
+    CountRotation:function(){
+        var radiance = this.Vector.signAngle(this.ComVec)
+        this.node.rotation = cc.misc.radiansToDegrees(radiance);
+    },
+
+    CountPosition(dt){
+        var pos = this.Vector.mul(dt);
+        this.node.x += pos.x;
+        this.node.y += pos.y;
+    },
+
+    update (dt) {
+       
+        this.CountSpeed(dt);
+        this.CountRotation();
+        this.CountPosition(dt);
+        // this.Duration -= dt ;
+        // if (this.Duration <= 0){
+        //     this.node.destroy();
+        // }
+    },
 });

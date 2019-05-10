@@ -44,10 +44,17 @@ cc.Class({
 
     onLoad () {
         this.node.getComponent(cc.BoxCollider).enabled = false ;
+        this.ripenedSize.x += parseInt(Math.random()*100 % 30);
+        this.ripenedSize.y = this.ripenedSize.x * 2 ;
+        this.node.getComponent(cc.BoxCollider).size.width = this.ripenedSize.x ;
+        this.node.getComponent(cc.BoxCollider).size.height = this.ripenedSize.y ;
         this.growSpeed = new cc.v2( (this.ripenedSize.x - this.node.width) / this.growUpDura , (this.ripenedSize.y - this.node.height) / this.growUpDura);
         this.originSize = new cc.v2(this.node.width , this.node.height);
         this.timer = 0
         this.addSpeed = 1 ;
+        this.frenquence += Math.random();
+        this.energy += Math.random();
+
     },
 
     start () {
@@ -84,11 +91,11 @@ cc.Class({
 
     DestroyFunc(dt){
         this.node.getComponent(cc.BoxCollider).enabled = false ;
-        //this.node.destroy();
-        this.statu = 0;
-        this.node.width = this.originSize.x;
-        this.node.height = this.originSize.y;
-        this.node.y -=  (this.ripenedSize.y - this.originSize.y) / 2 ;
+        this.node.destroy();
+        // this.statu = 0;
+        // this.node.width = this.originSize.x;
+        // this.node.height = this.originSize.y;
+        // this.node.y -=  (this.ripenedSize.y - this.originSize.y) / 2 ;
     },
 
     HealBird(){
@@ -98,10 +105,10 @@ cc.Class({
     onCollisionEnter(other ,self){
         if (other.node.group == "Player"){
             this.addSpeed *= 2 ;
-            this.schedule(this.HealBird, this.frenquence);
+            this.schedule(this.HealBird, this.frenquence  );
         }
-        if (other.node.group == "Enemy" && other.tag == 0 && other.node.getComponent("E_S_Collider").EnemyType == 0){
-            this.addSpeed *= 2 ;
+        if (other.node.group == "Enemy" && other.tag == 0 && other.node.getComponent("CatchTarget").EnemyType == 0){
+            this.addSpeed *= 8;
         }
     },
     onCollisionExit(other, self){
@@ -109,8 +116,8 @@ cc.Class({
             this.addSpeed /= 2 ;
             this.unschedule(this.HealBird, this );
         }
-        if (other.node.group == "Enemy" && other.tag == 0 && other.node.getComponent("E_S_Collider").EnemyType == 0){
-            this.addSpeed /= 2 ;
+        if (other.node.group == "Enemy" && other.tag == 0 && other.node.getComponent("CatchTarget").EnemyType == 0){
+            this.addSpeed /= 8 ;
         }
     },
 

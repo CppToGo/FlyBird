@@ -27,6 +27,7 @@ cc.Class({
         //         this._bar = value;
         //     }
         // },
+        isArcher:false,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -35,6 +36,59 @@ cc.Class({
 
     start () {
 
+    },
+
+
+
+
+    onCollisionEnter(other , self){
+        switch(self.tag){
+            case 0: // 捕捉Target
+
+            break;
+            case 1:
+
+            break;
+            case 2:
+
+            break;
+        }
+        
+    },
+
+    onCollisionStay(other, self){
+        switch(self.tag){
+            case 0:
+
+            break;
+            case 1:
+                if(this.isArcher){
+                    if(self.getComponent("E_MoveMotor").target != null && self.getComponent("E_MoveMotor").target == "Player" ){
+                        
+                    }
+                }
+            break;
+            case 2:
+            
+            break;
+        }
+    },  
+
+    onCollisionExit(other, self){
+        switch(self.tag){
+            case 0:
+
+            break;
+            case 1:
+                if(self.getComponent("E_MoveMotor").target != null  || other.node.group === "Player" ){
+                    self.getComponent("E_MoveMotor").target = null ;
+                }
+            break;
+            case 2:
+
+            break;
+        }
+        
     },
 
     // update (dt) {},

@@ -35,22 +35,20 @@ cc.Class({
             default:null,
             type:cc.Node,
         },
-        Target:{
-            default:null,
-            type:cc.Node,
-        }
+        Intervel:0,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        this.Fired = false ;
     },
 
-    onCollisionEnter(){
+    LoadBullet:function(){
+        this.Fired = true;
         this.BulletCahe = cc.instantiate(this.BulletPrefab);
-        this.BulletCahe.getComponent("BulletScript").Target = this.Target ;
-        this.BulletCahe.setPosition(this.BulletParents.getPosition());
+        this.BulletCahe.getComponent("BulletScript").Target = this.node.getComponent("E_MoveMotor").target ;
+        this.BulletCahe.setPosition( this.node.convertToWorldSpaceAR(cc.v2(-480,-320)));
         this.BulletParents.addChild(this.BulletCahe);
     },
 
@@ -58,6 +56,12 @@ cc.Class({
 
     },
 
-    pdate (dt) {
+    update (dt) {
+        if (this.node.getComponent("E_MoveMotor").target != null && this.node.getComponent("E_MoveMotor").target.group == "Player" && !this.Fired){
+            this.schedule(this.LoadBullet , this.Intervel);
+        }else if (this.node.getComponent("E_MoveMotor").target == null || this.node.getComponent("E_MoveMotor").target.group == "Rice") {
+            this.unschedule(this.LoadBullet , this);
+            this.Fired = false
+        }
     },
 });
