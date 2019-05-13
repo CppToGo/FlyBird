@@ -46,7 +46,7 @@ cc.Class({
         //cc.audioEngine.setVolume(this.AudioID[self.tag], 1);
     },
     onCollisionStay(other, self){
-        cc.audioEngine.setVolume(this.AudioID[self.tag], 0.8);
+        cc.audioEngine.setVolume(this.AudioID[self.tag], 1);
         // if (this.Target.getPosition().y !=  self.offset.y ){
         //     cc.audioEngine.setVolume(this.AudioID[self.tag], value);
         // }else{
@@ -55,7 +55,7 @@ cc.Class({
 
     },
     onCollisionExit(other, self){
-        cc.audioEngine.setVolume(this.AudioID[self.tag], 0.2);
+        cc.audioEngine.setVolume(this.AudioID[self.tag], 0.5);
     },
 
     onLoad () {

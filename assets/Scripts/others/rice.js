@@ -69,6 +69,8 @@ cc.Class({
         if (this.growUpDura - this.timer <= 0){
             this.statu ++;
             this.timer = 0 
+            var animation = this.node.getComponent(cc.Animation) ;
+            animation.play(animation.getClips()[0].name,0)
         }
     },
 
