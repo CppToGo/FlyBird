@@ -27,14 +27,39 @@ cc.Class({
         //         this._bar = value;
         //     }
         // },
+        Target:{
+            default:null,
+            type:cc.Node,
+        },
+        AudioClips:{
+            default:[],
+            type:[cc.AudioClip],
+        },
+        BufferWidth:0,
+        LMLine:0,
+        MHLine:0
     },
 
     // LIFE-CYCLE CALLBACKS:
 
+    onCollisionEnter(other, self){
+        //cc.audioEngine.setVolume(this.AudioID[self.tag], 1);
+    },
+    onCollisionStay(other, self){
+        cc.audioEngine.setVolume(this.AudioID[self.tag], 0.8);
+        // if (this.Target.getPosition().y !=  self.offset.y ){
+        //     cc.audioEngine.setVolume(this.AudioID[self.tag], value);
+        // }else{
+        //     cc.audioEngine.setVolume(this.AudioID[self.tag], 1);
+        // }
+
+    },
+    onCollisionExit(other, self){
+        cc.audioEngine.setVolume(this.AudioID[self.tag], 0.2);
+    },
+
     onLoad () {
-        cc.director.getCollisionManager().enabled = true;
-       // cc.director.getCollisionManager().enabledDebugDraw = true;
-      //  cc.director.getCollisionManager().enabledDrawBoundingBox = true;
+       this.AudioID = new Array(cc.audioEngine.play(this.AudioClips[0],true , 0),cc.audioEngine.play(this.AudioClips[1],true , 0),cc.audioEngine.play(this.AudioClips[2],true , 0));
     },
 
     start () {

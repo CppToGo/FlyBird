@@ -53,7 +53,7 @@ cc.Class({
         this.Vector = vec.normalizeSelf().mul(this.Speed) ;
         this.ComVec = new cc.Vec2(0,1);
 
-        cc.audioEngine.playEffect(this.AudioClip[0],false);
+        cc.audioEngine.play(this.AudioClip[0],false, 0.1);
 
         // this.node.runAction( cc.sequence(cc.callFunc(function(){
         //     cc.audioEngine.playEffect(this.AudioClip[0],false);
@@ -62,7 +62,7 @@ cc.Class({
 
     onCollisionEnter(other ,self){ 
         if(other.node.group == "Player"){
-            cc.audioEngine.playEffect(this.AudioClip[1],false);
+            cc.audioEngine.play(this.AudioClip[1],false, 0.1);
             other.node.getComponent("LifeManager").AddLife(-this.Damage);
         }
         this.node.destroy();
